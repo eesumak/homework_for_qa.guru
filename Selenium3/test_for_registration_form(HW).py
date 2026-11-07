@@ -85,11 +85,14 @@ class TestStudentRegistrationForm:
 
     def select_subject(self, subject):
         self.driver.find_element(*self.SUBJECTS_INPUT).click()
-        self.wait.until(EC.element_to_be_clickable(
-            (By.XPATH, f"//div[contains(@class, 'subjects-auto-complete__option') and text()='{subject}']"))).click()
+        subject = self.driver.find_element(By.XPATH, f"//div[contains(@class, 'subjects-auto-complete__option') and text()='{subject}']")
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", subject)
+        self.wait.until(EC.element_to_be_clickable(subject)).click()
 
     def click_submit_button(self):
-        self.driver.find_element(*self.SUBMIT_BUTTON).click()
+        button = self.driver.find_element(*self.SUBMIT_BUTTON)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+        self.wait.until(EC.element_to_be_clickable(button)).click()
 
     def check_message(self):
         return self.driver.find_element(*self.MESSAGE).text
